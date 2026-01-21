@@ -21,15 +21,21 @@ jobs:
     steps:
       - name: Build payload
         run: |
-          cat << 'EOF' > payload.json
+          PUBLISH=false
+          if [ "${{ github.event.inputs.publish }}" = "true" ]; then
+            PUBLISH=true
+          fi
+      
+          cat << EOF > payload.json
           {
             "url": "${{ github.event.inputs.url }}",
             "title": "${{ github.event.inputs.title }}",
             "head": "<meta name=\"robots\" content=\"noindex,nofollow\">",
             "body": "<h1>${{ github.event.inputs.title }}</h1><p>Создано через GitHub Actions</p>",
-            "publish": ${{ github.event.inputs.publish }}
+            "publish": $PUBLISH
           }
           EOF
+
 
       - name: Send request to WordPress
         run: |
