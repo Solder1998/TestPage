@@ -39,7 +39,12 @@ jobs:
 
       - name: Send request to WordPress
         run: |
-          curl -s -X POST "${{ secrets.WP_API_URL }}" \
+          echo "=== PAYLOAD ==="
+          cat payload.json
+          echo ""
+      
+          echo "=== RESPONSE ==="
+          curl -i -X POST "${{ secrets.WP_API_URL }}" \
             -H "Content-Type: application/json" \
             -H "X-AI-TOKEN: ${{ secrets.WP_API_TOKEN }}" \
             --data @payload.json
