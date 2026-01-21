@@ -1,0 +1,9 @@
+{
+  "url": "hello-codex",
+  "title": "Привет от Codex",
+  "language": "RU",
+  "theme": "майнинг пул",
+  "head": "<meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+  "body": "<main class=\"landing\">\n  <header class=\"hero\">\n    <p class=\"badge\">RU • Майнинг пул</p>\n    <h1>Привет от Codex</h1>\n    <p class=\"subtitle\">Стабильный пул для майнинга с прозрачной статистикой, высокой выплатой и круглосуточной поддержкой.</p>\n    <a class=\"cta\" href=\"#start\">Начать майнинг</a>\n  </header>\n\n  <section class=\"features\">\n    <h2>Почему выбирают наш пул</h2>\n    <ul>\n      <li>Низкая комиссия и прозрачная модель распределения.</li>\n      <li>Автоматические выплаты и подробная аналитика хешрейта.</li>\n      <li>Защита от даунтаймов и распределённая инфраструктура.</li>\n    </ul>\n  </section>\n\n  <section class=\"steps\" id=\"start\">\n    <h2>Подключение за 3 шага</h2>\n    <ol>\n      <li>Создайте аккаунт и получите адрес воркера.</li>\n      <li>Подключите оборудование к серверам пула.</li>\n      <li>Отслеживайте доходность в личном кабинете.</li>\n    </ol>\n  </section>\n\n  <section class=\"trust\">\n    <h2>Надёжность и поддержка</h2>\n    <p>Команда инженеров 24/7 помогает оптимизировать работу, а SLA гарантирует стабильность соединения.</p>\n  </section>\n</main>",
+  "publish": true
+}
