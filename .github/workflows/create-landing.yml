@@ -1,7 +1,7 @@
 name: Create Landing via AI API
 
 on:
-  # 🔹 Ручной запуск из GitHub UI (оставляем, как у тебя было)
+  # 🔹 Ручной запуск из GitHub UI
   workflow_dispatch:
     inputs:
       url:
@@ -15,8 +15,10 @@ on:
         required: false
         default: "false"
 
-  # 🔹 Автозапуск при изменении payload.json (Codex / merge / commit)
+  # 🔹 Автозапуск ТОЛЬКО при изменении payload.json в main
   push:
+    branches:
+      - main
     paths:
       - payload.json
 
@@ -28,7 +30,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🔹 Если workflow запущен вручную — собираем payload из input’ов
+      # 🔹 Если workflow запущен вручную — собираем payload.json
       - name: Build payload from inputs (manual run)
         if: github.event_name == 'workflow_dispatch'
         run: |
@@ -47,7 +49,7 @@ jobs:
           }
           EOF
 
-      # 🔹 Отправка payload.json в WordPress (и для manual, и для Codex)
+      # 🔹 Отправка payload.json в WordPress
       - name: Send request to WordPress
         run: |
           echo "=== PAYLOAD ==="
