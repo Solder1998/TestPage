@@ -1,10 +1,11 @@
 name: Create Landing via AI API
 
 on:
+  # 🔹 Ручной запуск из GitHub UI (оставляем, как у тебя было)
   workflow_dispatch:
     inputs:
       url:
-        description: "URL path (e.g. /lp/test-offer)"
+        description: "URL path (e.g. hello-test or lp/test-offer)"
         required: true
       title:
         description: "Landing title"
@@ -14,18 +15,28 @@ on:
         required: false
         default: "false"
 
+  # 🔹 Автозапуск при изменении payload.json (Codex / merge / commit)
+  push:
+    paths:
+      - payload.json
+
 jobs:
   create:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Build payload
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 🔹 Если workflow запущен вручную — собираем payload из input’ов
+      - name: Build payload from inputs (manual run)
+        if: github.event_name == 'workflow_dispatch'
         run: |
           PUBLISH=false
           if [ "${{ github.event.inputs.publish }}" = "true" ]; then
             PUBLISH=true
           fi
-      
+
           cat << EOF > payload.json
           {
             "url": "${{ github.event.inputs.url }}",
@@ -36,15 +47,15 @@ jobs:
           }
           EOF
 
-
+      # 🔹 Отправка payload.json в WordPress (и для manual, и для Codex)
       - name: Send request to WordPress
         run: |
           echo "=== PAYLOAD ==="
           cat payload.json
           echo ""
-      
+
           echo "=== RESPONSE ==="
-            curl -i -L -X POST "${{ secrets.WP_API_URL }}" \
-              -H "Content-Type: application/json" \
-              -H "X-AI-TOKEN: ${{ secrets.WP_API_TOKEN }}" \
-              --data @payload.json
+          curl -i -L -X POST "${{ secrets.WP_API_URL }}" \
+            -H "Content-Type: application/json" \
+            -H "X-AI-TOKEN: ${{ secrets.WP_API_TOKEN }}" \
+            --data @payload.json
