@@ -1,0 +1,39 @@
+name: Create Landing via AI API
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL path (e.g. /lp/test-offer)"
+        required: true
+      title:
+        description: "Landing title"
+        required: true
+      publish:
+        description: "Publish immediately? true/false"
+        required: false
+        default: "false"
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build payload
+        run: |
+          cat << 'EOF' > payload.json
+          {
+            "url": "${{ github.event.inputs.url }}",
+            "title": "${{ github.event.inputs.title }}",
+            "head": "<meta name=\"robots\" content=\"noindex,nofollow\">",
+            "body": "<h1>${{ github.event.inputs.title }}</h1><p>Создано через GitHub Actions</p>",
+            "publish": ${{ github.event.inputs.publish }}
+          }
+          EOF
+
+      - name: Send request to WordPress
+        run: |
+          curl -s -X POST "${{ secrets.WP_API_URL }}" \
+            -H "Content-Type: application/json" \
+            -H "X-AI-TOKEN: ${{ secrets.WP_API_TOKEN }}" \
+            --data @payload.json
